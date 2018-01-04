@@ -7,7 +7,7 @@
     tools:context="com.example.product.restaurantmemo.PostActivity">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/post_appearance"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintDimensionRatio="h,2.3:1"
@@ -17,7 +17,7 @@
         app:srcCompat="@android:color/darker_gray" />
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/post_comment"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="50dp"
@@ -29,11 +29,11 @@
         android:textColor="@android:color/darker_gray"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintStart_toEndOf="@+id/post_comment_title"
+        app:layout_constraintTop_toBottomOf="@+id/post_appearance" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/post_comment_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
@@ -42,10 +42,10 @@
         android:textColor="@android:color/black"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/post_appearance" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/post_star_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
@@ -54,10 +54,10 @@
         android:textColor="@android:color/black"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/post_comment_title" />
 
     <RatingBar
-        android:id="@+id/ratingBar"
+        android:id="@+id/post_star"
         style="@android:style/Widget.DeviceDefault.RatingBar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -67,11 +67,11 @@
         android:numStars="5"
         android:rating="0"
         android:stepSize="0.5"
-        app:layout_constraintStart_toEndOf="@+id/textView2"
-        app:layout_constraintTop_toBottomOf="@+id/editText" />
+        app:layout_constraintStart_toEndOf="@+id/post_star_title"
+        app:layout_constraintTop_toBottomOf="@+id/post_comment" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/post_save_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
@@ -80,5 +80,5 @@
         android:textSize="18sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintTop_toBottomOf="@+id/post_star_title" />
 </android.support.constraint.ConstraintLayout>

@@ -10,5 +10,5 @@ open class ShopLog(
         open var id: Long = 1,
         open var placeId: String = "",
         open var comment: String? = null,
-        open var numStars: Int = 0
+        open var numStars: Float = 0f
 ): RealmObject(){}

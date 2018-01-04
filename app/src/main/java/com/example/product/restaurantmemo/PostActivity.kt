@@ -30,14 +30,15 @@ class PostActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         realm.close()
+        super.onDestroy()
     }
 
     // 投稿データの保存
     private fun savePostData(shopLog: ShopLog) {
+        // idの生成(オートインクリメント)
         if(!realm.isEmpty) {
-            shopLog.id = getShopLogId()
+            shopLog.id = realm.where(ShopLog::class.java).max("id")!!.toLong() + 1
         }
 
         shopLog.comment = post_comment.text.toString()
@@ -50,11 +51,5 @@ class PostActivity : AppCompatActivity() {
         realm.where(ShopLog::class.java).findAll().forEach {
             Log.d("REALM", "${it.id}, ${it.placeId}, ${it.comment}, ${it.numStars}")
         }
-    }
-
-    // idの生成(オートインクリメント)
-    private fun getShopLogId(): Long {
-        val maxId = realm.where(ShopLog::class.java).max("id")!!.toLong()
-        return maxId + 1
     }
 }

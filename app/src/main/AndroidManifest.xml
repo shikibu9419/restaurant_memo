@@ -21,7 +21,7 @@
 
         <activity
             android:name=".ListShopActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>
 

@@ -6,9 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
-import io.realm.OrderedRealmCollection
 import io.realm.Realm
-import io.realm.Sort
 import kotlin.properties.Delegates
 
 class ListShopFragment : Fragment() {
@@ -26,7 +24,9 @@ class ListShopFragment : Fragment() {
         realm = Realm.getDefaultInstance()
 
         val list = view?.findViewById<View>(R.id.shop_list_view) as ListView
-        list.adapter = ListShopAdapter(extractShopList())
+        val uniqueData = realm.where(ShopLog::class.java).distinct("placeId")
+        
+        list.adapter = ListShopAdapter(uniqueData)
 
 //        list.setOnItemClickListener {
 //            // 店の詳細情報へ
@@ -36,22 +36,5 @@ class ListShopFragment : Fragment() {
     override fun onDestroy() {
         realm.close()
         super.onDestroy()
-    }
-
-    // TODO: placeId -> 店名や日付 にする
-    private fun extractShopList(): OrderedRealmCollection<ShopLog> {
-        val uniqueData = realm.where(ShopLog::class.java).distinct("placeId")
-
-        uniqueData.forEach {
-            val logResult = realm.where(ShopLog::class.java)
-                    .equalTo("placeId", it.placeId)
-                    .findAllSorted("id", Sort.DESCENDING)
-
-            it.aveNumStars = logResult.average("numStars").toFloat()
-            it.numVisits = logResult.size
-            it.latestLog = "${logResult[0].placeId} ー ${logResult[0].comment}\n${logResult[1].placeId} ー ${logResult[1].comment}"
-        }
-
-        return uniqueData
     }
 }

@@ -7,10 +7,16 @@ import android.widget.ListAdapter
 import android.widget.RatingBar
 import android.widget.TextView
 import io.realm.OrderedRealmCollection
+import io.realm.Realm
 import io.realm.RealmBaseAdapter
+import io.realm.Sort
 
 class ListShopAdapter(realmResults: OrderedRealmCollection<ShopLog>)
     : RealmBaseAdapter<ShopLog>(realmResults), ListAdapter {
+
+    private var aveNumStars = 0f
+    private var numVisits = 0
+    private var latestLog = ""
 
     private class ViewHolder(itemView: View) {
         var name = itemView.findViewById<View>(R.id.shop_name) as TextView
@@ -34,16 +40,28 @@ class ListShopAdapter(realmResults: OrderedRealmCollection<ShopLog>)
             holder = view.tag as ViewHolder
         }
 
-        // Viewにそれぞれ値を代入
-        holder.name.text = getItem(position)?.placeId
-        holder.visits.text = "${getItem(position)?.numVisits}回このお店に来ています"
-        holder.latestLog.text = getItem(position)?.latestLog
+        initItem(getItem(position))
 
-        val starRating = getItem(position)?.aveNumStars
-        if(starRating != null) {
-            holder.stars.rating = starRating
-        }
+        // Viewにそれぞれ値を代入
+        holder.name.text = getItem(position)?.placeId + " (Name)"
+        holder.visits.text = "${numVisits}回このお店に来ています"
+        holder.latestLog.text = latestLog
+        holder.stars.rating = aveNumStars
 
         return view
+    }
+
+    // 星の平均, 訪れた回数, 最新ログの生成
+    private fun initItem(resultItem: ShopLog?) {
+        Realm.getDefaultInstance().use { realm ->
+            val resultLog = realm.where(ShopLog::class.java)
+                    .equalTo("placeId", resultItem?.placeId)
+                    .findAllSorted("id", Sort.DESCENDING)
+
+            aveNumStars = resultLog.average("numStars").toFloat()
+            numVisits = resultLog.size
+            latestLog = "${resultLog[0].placeId} (Date) ー ${resultLog[0].comment}\n${resultLog[1].placeId} (Date) ー ${resultLog[1].comment}"
+        }
+
     }
 }

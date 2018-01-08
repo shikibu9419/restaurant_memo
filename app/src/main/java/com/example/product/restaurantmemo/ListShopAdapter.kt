@@ -43,7 +43,7 @@ class ListShopAdapter(realmResults: OrderedRealmCollection<ShopLog>)
         initItem(getItem(position))
 
         // Viewにそれぞれ値を代入
-        holder.name.text = getItem(position)?.placeId + " (Name)"
+        holder.name.text = "${getItem(position)?.placeId} (Name)"
         holder.visits.text = "${numVisits}回このお店に来ています"
         holder.latestLog.text = latestLog
         holder.stars.rating = aveNumStars
@@ -60,8 +60,13 @@ class ListShopAdapter(realmResults: OrderedRealmCollection<ShopLog>)
 
             aveNumStars = resultLog.average("numStars").toFloat()
             numVisits = resultLog.size
-            latestLog = "${resultLog[0].placeId} (Date) ー ${resultLog[0].comment}\n${resultLog[1].placeId} (Date) ー ${resultLog[1].comment}"
+            latestLog = extractLatestLog(resultLog[0], resultLog[1])
         }
+    }
 
+    // 最新ログの抽出
+    private fun extractLatestLog(log1: ShopLog, log2: ShopLog): String {
+        return "${log1.placeId} (Date)" + if (log1.comment.isNotEmpty()) " - ${log1.comment}\n" else "\n" +
+                "${log2.placeId} (Date)" + if (log2.comment.isNotEmpty()) " - ${log2.comment}" else ""
     }
 }

@@ -8,6 +8,6 @@ import io.realm.annotations.RealmClass
 open class ShopLog(
         @PrimaryKey var id: Long = 0,
         var placeId: String = "",
-        var comment: String? = null,
+        var comment: String = "",
         var numStars: Float = 0f
 ): RealmObject(){}

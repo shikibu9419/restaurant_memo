@@ -41,12 +41,14 @@
             android:id="@+id/shop_visits"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"/>
+            android:textSize="12sp"
+            android:layout_marginTop="1dp"/>
 
         <TextView
             android:id="@+id/shop_latest_log"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="12sp"
             android:layout_marginTop="4dp"/>
 
     </LinearLayout>

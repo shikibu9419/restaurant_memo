@@ -6,10 +6,7 @@ import android.view.ViewGroup
 import android.widget.ListAdapter
 import android.widget.RatingBar
 import android.widget.TextView
-import io.realm.OrderedRealmCollection
-import io.realm.Realm
-import io.realm.RealmBaseAdapter
-import io.realm.Sort
+import io.realm.*
 
 class ListShopAdapter(realmResults: OrderedRealmCollection<ShopLog>)
     : RealmBaseAdapter<ShopLog>(realmResults), ListAdapter {
@@ -60,13 +57,17 @@ class ListShopAdapter(realmResults: OrderedRealmCollection<ShopLog>)
 
             aveNumStars = resultLog.average("numStars").toFloat()
             numVisits = resultLog.size
-            latestLog = extractLatestLog(resultLog[0], resultLog[1])
+            latestLog = extractLatestLog(resultLog)
         }
     }
 
     // 最新ログの抽出
-    private fun extractLatestLog(log1: ShopLog, log2: ShopLog): String {
-        return "${log1.placeId} (Date)" + if (log1.comment.isNotEmpty()) " - ${log1.comment}\n" else "\n" +
-                "${log2.placeId} (Date)" + if (log2.comment.isNotEmpty()) " - ${log2.comment}" else ""
+    private fun extractLatestLog(logs: RealmResults<ShopLog>): String {
+        var response = "${logs[0].placeId} (Date)" + if (logs[0].comment.isNotEmpty()) " - ${logs[0].comment}\n" else "\n"
+        if (logs.size > 1) {
+            response += "${logs[1].placeId} (Date)" + if (logs[1].comment.isNotEmpty()) " - ${logs[1].comment}" else ""
+        }
+
+        return response
     }
 }

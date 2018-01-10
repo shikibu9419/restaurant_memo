@@ -31,3 +31,23 @@
 ## その他
 
 gitの使い方のルールとしてこのファイルがある階層のcontributer.mdを参照してください。
+
+## 開発を始める前に
+
+開発を始める前にgoogle apiとの紐付けが必要です。
+
+https://console.developers.google.com
+
+ここにアクセスして新しいプロジェクトを作成します。
+そうした上で以下のAPIを有効にして認証情報を作成する。
+この時APIキーを取得する。
+
+- Google Places API for Android
+
+作成したらそのキーを環境変数に埋め込む。
+
+**windowsの場合**
+
+システムのプロパティ->環境変数->(システムの環境変数の)新規
+
+と押して変数名「RESTAURANT\_MEMO\_DEVELOPER\_KEY」で変数値を先ほど取得したキーを埋め込む

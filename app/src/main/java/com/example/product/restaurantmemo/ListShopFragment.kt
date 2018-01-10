@@ -22,10 +22,14 @@ class ListShopFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         realm = Realm.getDefaultInstance()
+    }
+
+    override fun onResume() {
+        super.onResume()
 
         val list = view?.findViewById<View>(R.id.shop_list_view) as ListView
         val uniqueData = realm.where(ShopLog::class.java).distinct("placeId")
-        
+
         list.adapter = ListShopAdapter(uniqueData)
 
 //        list.setOnItemClickListener {

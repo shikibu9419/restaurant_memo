@@ -10,17 +10,13 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
         Realm.init(this@MainActivity)
 
-        button_post.setOnClickListener {
-            val intent = Intent(this@MainActivity, PostActivity::class.java)
-            startActivity(intent)
-        }
+        setContentView(R.layout.activity_main)
 
-        button_list.setOnClickListener {
-            val intent = Intent(this@MainActivity, ListShopActivity::class.java)
+        fab.setOnClickListener {
+            val intent = Intent(this@MainActivity, PostActivity::class.java)
             startActivity(intent)
         }
     }

@@ -7,11 +7,13 @@ import android.widget.ListAdapter
 import android.widget.RatingBar
 import android.widget.TextView
 import io.realm.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 class ListShopAdapter(realmResults: OrderedRealmCollection<ShopLog>)
     : RealmBaseAdapter<ShopLog>(realmResults), ListAdapter {
 
-    private var aveNumStars = 0f
+    private var aveStarRating = 0f
     private var numVisits = 0
     private var latestLog = ""
 
@@ -40,10 +42,10 @@ class ListShopAdapter(realmResults: OrderedRealmCollection<ShopLog>)
         initItem(getItem(position))
 
         // Viewにそれぞれ値を代入
-        holder.name.text = "${getItem(position)?.placeId} (Name)"
+        holder.name.text = getItem(position)?.placeId
         holder.visits.text = "${numVisits}回このお店に来ています"
         holder.latestLog.text = latestLog
-        holder.stars.rating = aveNumStars
+        holder.stars.rating = aveStarRating
 
         return view
     }
@@ -55,7 +57,7 @@ class ListShopAdapter(realmResults: OrderedRealmCollection<ShopLog>)
                     .equalTo("placeId", resultItem?.placeId)
                     .findAllSorted("id", Sort.DESCENDING)
 
-            aveNumStars = resultLog.average("numStars").toFloat()
+            aveStarRating = resultLog.average("starRating").toFloat()
             numVisits = resultLog.size
             latestLog = extractLatestLog(resultLog)
         }
@@ -63,9 +65,12 @@ class ListShopAdapter(realmResults: OrderedRealmCollection<ShopLog>)
 
     // 最新ログの抽出
     private fun extractLatestLog(logs: RealmResults<ShopLog>): String {
-        var response = "${logs[0].placeId} (Date)" + if (logs[0].comment.isNotEmpty()) " - ${logs[0].comment}\n" else "\n"
+        val df = SimpleDateFormat("YYYY/MM/DD")
+        df.timeZone = (TimeZone.getTimeZone("Asia/Tokyo"))
+
+        var response = df.format(logs[0].logDate) + if (logs[0].comment.isNotEmpty()) " - ${logs[0].comment}\n" else "\n"
         if (logs.size > 1) {
-            response += "${logs[1].placeId} (Date)" + if (logs[1].comment.isNotEmpty()) " - ${logs[1].comment}" else ""
+            response += df.format(logs[0].logDate) + if (logs[1].comment.isNotEmpty()) " - ${logs[1].comment}" else ""
         }
 
         return response

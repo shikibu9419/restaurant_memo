@@ -10,9 +10,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         Realm.init(this@MainActivity)
-
         setContentView(R.layout.activity_main)
 
         fab.setOnClickListener {

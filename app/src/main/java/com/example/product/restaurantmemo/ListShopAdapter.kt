@@ -65,7 +65,7 @@ class ListShopAdapter(realmResults: OrderedRealmCollection<ShopLog>)
 
     // 最新ログの抽出
     private fun extractLatestLog(logs: RealmResults<ShopLog>): String {
-        val df = SimpleDateFormat("YYYY/MM/DD")
+        val df = SimpleDateFormat("yyyy/MM/dd")
         df.timeZone = (TimeZone.getTimeZone("Asia/Tokyo"))
 
         var response = df.format(logs[0].logDate) + if (logs[0].comment.isNotEmpty()) " - ${logs[0].comment}\n" else "\n"

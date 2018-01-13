@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_post.*
+import java.util.*
 import kotlin.properties.Delegates
 
 class PostActivity : AppCompatActivity() {
@@ -41,15 +42,16 @@ class PostActivity : AppCompatActivity() {
             shopLog.id = realm.where(ShopLog::class.java).max("id")!!.toLong() + 1
         }
 
+        shopLog.logDate = Date(System.currentTimeMillis())
         shopLog.comment = post_comment.text.toString()
-        shopLog.numStars = post_star.rating
+        shopLog.starRating = post_star.rating
 
         realm.executeTransaction {
             realm.copyToRealmOrUpdate(shopLog)
         }
 
         realm.where(ShopLog::class.java).findAll().forEach {
-            Log.d("REALM", "${it.id}, ${it.placeId}, ${it.comment}, ${it.numStars}")
+            Log.d("REALM", "${it.id}, ${it.placeId}, ${it.logDate}, ${it.comment}, ${it.starRating}")
         }
     }
 }

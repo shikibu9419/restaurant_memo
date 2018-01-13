@@ -3,12 +3,13 @@ package com.example.product.restaurantmemo
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import io.realm.annotations.RealmClass
+import java.util.*
 
 @RealmClass
 open class ShopLog(
-        @PrimaryKey
-        open var id: Long = 0,
-        open var placeId: String = "",
-        open var comment: String? = null,
-        open var numStars: Float = 0f
+        @PrimaryKey var id: Long = 0,
+        var placeId: String = "",
+        var comment: String = "",
+        var starRating: Float = 0f,
+        var logDate: Date = Date()
 ): RealmObject(){}

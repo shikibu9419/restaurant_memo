@@ -11,13 +11,12 @@ import io.realm.OrderedRealmCollection
 import io.realm.Realm
 import io.realm.Sort
 import kotlinx.android.synthetic.main.fragment_detail.*
-import kotlin.properties.Delegates
 
 
 class DetailFragment : Fragment() {
 
     private var mView: View? = null
-    private var realm: Realm by Delegates.notNull()
+    lateinit var mRealm: Realm
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -26,7 +25,7 @@ class DetailFragment : Fragment() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        realm = Realm.getDefaultInstance()
+        mRealm = Realm.getDefaultInstance()
         mView = view
     }
 
@@ -34,8 +33,8 @@ class DetailFragment : Fragment() {
         super.onResume()
 
         val id = if (arguments != null) { arguments.getLong(MainActivity.EXTRA_ID) } else { null }
-        val placeId = realm.where(ShopLog::class.java).equalTo("id", id).findAll()[0].placeId
-        val shopLogs = realm.where(ShopLog::class.java)
+        val placeId = mRealm.where(ShopLog::class.java).equalTo("id", id).findAll()[0].placeId
+        val shopLogs = mRealm.where(ShopLog::class.java)
                 .equalTo("placeId", placeId)
                 .findAllSorted("id", Sort.DESCENDING)
 
@@ -43,23 +42,22 @@ class DetailFragment : Fragment() {
     }
 
     override fun onDestroy() {
-        realm.close()
+        mRealm.close()
         super.onDestroy()
     }
 
     @CheckResult
     fun createInstance(id: Long): DetailFragment {
-        val fragment = DetailFragment()
+        val mFragment = DetailFragment()
         val args = Bundle()
 
         args.putLong(MainActivity.EXTRA_ID, id)
-        fragment.arguments = args
+        mFragment.arguments = args
 
-        return fragment
+        return mFragment
     }
 
     private fun initLog(shopLogs: OrderedRealmCollection<ShopLog>) {
-        // TODO: 実装後build.gradleを元に戻す
         // TODO: 営業情報etc.の追加
 
         shop_star_text.text = "あなたの評価 ：" +

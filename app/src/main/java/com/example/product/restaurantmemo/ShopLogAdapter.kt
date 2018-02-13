@@ -15,24 +15,24 @@ class ShopLogAdapter(realmResults: OrderedRealmCollection<ShopLog>)
     : RealmBaseAdapter<ShopLog>(realmResults), ListAdapter {
 
     private class ViewHolder(itemView: View) {
-        var date = itemView.findViewById<View>(R.id.log_date) as TextView
+        var date    = itemView.findViewById<View>(R.id.log_date) as TextView
         var comment = itemView.findViewById<View>(R.id.log_comment) as TextView
-        var stars = itemView.findViewById<View>(R.id.log_star) as RatingBar
+        var stars   = itemView.findViewById<View>(R.id.log_star) as RatingBar
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View? {
-        var view: View? = convertView
-        val holder: ViewHolder
+        var mView: View? = convertView
+        val mHolder: ViewHolder
 
-        if (view == null) {
-            view = LayoutInflater.from(parent.context)
+        if (mView == null) {
+            mView = LayoutInflater.from(parent.context)
                     .inflate(R.layout.item_shop_log, parent, false)
 
-            holder = ViewHolder(view)
+            mHolder = ViewHolder(mView)
 
-            view.tag = holder
+            mView.tag = mHolder
         } else {
-            holder = view.tag as ViewHolder
+            mHolder = mView.tag as ViewHolder
         }
 
         val df = SimpleDateFormat("yyyy/MM/dd")
@@ -42,12 +42,12 @@ class ShopLogAdapter(realmResults: OrderedRealmCollection<ShopLog>)
 
         // Viewにそれぞれ値を代入
         if (resultItem != null) {
-            holder.date.text = df.format(resultItem.logDate)
-            holder.comment.text = resultItem.comment
-            holder.stars.rating = resultItem.starRating
+            mHolder.date.text    = df.format(resultItem.logDate)
+            mHolder.comment.text = resultItem.comment
+            mHolder.stars.rating = resultItem.starRating
         }
 
-        return view
+        return mView
     }
 
     override fun isEnabled(position: Int): Boolean {

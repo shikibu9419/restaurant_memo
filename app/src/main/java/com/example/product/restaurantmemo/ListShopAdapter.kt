@@ -18,36 +18,36 @@ class ListShopAdapter(realmResults: OrderedRealmCollection<ShopLog>)
     private var latestLog = ""
 
     private class ViewHolder(itemView: View) {
-        var name = itemView.findViewById<View>(R.id.shop_name) as TextView
-        var visits = itemView.findViewById<View>(R.id.shop_visits) as TextView
+        var name      = itemView.findViewById<View>(R.id.shop_name) as TextView
+        var visits    = itemView.findViewById<View>(R.id.shop_visits) as TextView
         var latestLog = itemView.findViewById<View>(R.id.shop_latest_log) as TextView
-        var stars = itemView.findViewById<View>(R.id.shop_star) as RatingBar
+        var stars     = itemView.findViewById<View>(R.id.shop_star) as RatingBar
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View? {
-        var view: View? = convertView
-        val holder: ViewHolder
+        var mView: View? = convertView
+        val mHolder: ViewHolder
 
-        if (view == null) {
-            view = LayoutInflater.from(parent.context)
+        if (mView == null) {
+            mView = LayoutInflater.from(parent.context)
                     .inflate(R.layout.item_list_shop, parent, false)
 
-            holder = ViewHolder(view)
+            mHolder = ViewHolder(mView)
 
-            view.tag = holder
+            mView.tag = mHolder
         } else {
-            holder = view.tag as ViewHolder
+            mHolder = mView.tag as ViewHolder
         }
 
         initItem(getItem(position))
 
         // Viewにそれぞれ値を代入
-        holder.name.text = getItem(position)?.placeId
-        holder.visits.text = "${numVisits}回このお店に来ています"
-        holder.latestLog.text = latestLog
-        holder.stars.rating = aveStarRating
+        mHolder.name.text      = getItem(position)?.placeId
+        mHolder.visits.text    = "${numVisits}回このお店に来ています"
+        mHolder.latestLog.text = latestLog
+        mHolder.stars.rating   = aveStarRating
 
-        return view
+        return mView
     }
 
     // 星の平均, 訪れた回数, 最新ログの生成
@@ -58,8 +58,8 @@ class ListShopAdapter(realmResults: OrderedRealmCollection<ShopLog>)
                     .findAllSorted("id", Sort.DESCENDING)
 
             aveStarRating = resultLog.average("starRating").toFloat()
-            numVisits = resultLog.size
-            latestLog = extractLatestLog(resultLog)
+            numVisits     = resultLog.size
+            latestLog     = extractLatestLog(resultLog)
         }
     }
 
@@ -68,11 +68,13 @@ class ListShopAdapter(realmResults: OrderedRealmCollection<ShopLog>)
         val df = SimpleDateFormat("yyyy/MM/dd")
         df.timeZone = (TimeZone.getTimeZone("Asia/Tokyo"))
 
-        var response = df.format(logs[0].logDate) + if (logs[0].comment.isNotEmpty()) " - ${logs[0].comment}\n" else "\n"
+        var logComment = df.format(logs[0].logDate) +
+                if (logs[0].comment.isNotEmpty()) " - ${logs[0].comment}\n" else "\n"
         if (logs.size > 1) {
-            response += df.format(logs[0].logDate) + if (logs[1].comment.isNotEmpty()) " - ${logs[1].comment}" else ""
+            logComment += df.format(logs[0].logDate) +
+                if (logs[1].comment.isNotEmpty()) " - ${logs[1].comment}" else ""
         }
 
-        return response
+        return logComment
     }
 }

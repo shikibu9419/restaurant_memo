@@ -7,11 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
 import io.realm.Realm
-import kotlin.properties.Delegates
 
 class ListShopFragment : Fragment() {
 
-    private var realm: Realm by Delegates.notNull()
+    lateinit var mRealm: Realm
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -21,20 +20,20 @@ class ListShopFragment : Fragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        realm = Realm.getDefaultInstance()
+        mRealm = Realm.getDefaultInstance()
     }
 
     override fun onResume() {
         super.onResume()
 
         val list = view?.findViewById<View>(R.id.shop_list_view) as ListView
-        val uniqueData = realm.where(ShopLog::class.java).distinct("placeId")
+        val uniqueData = mRealm.where(ShopLog::class.java).distinct("placeId")
 
         list.adapter = ListShopAdapter(uniqueData)
     }
 
     override fun onDestroy() {
-        realm.close()
+        mRealm.close()
         super.onDestroy()
     }
 }

@@ -13,9 +13,9 @@ class DetailActivity : AppCompatActivity() {
 
         // if (id == null) { id = -1 }
         val id = intent.getLongExtra(MainActivity.EXTRA_ID, -1)
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.add(R.id.frame_fragment_detail, DetailFragment().createInstance(id))
-        transaction.commit()
+        val mTransaction = supportFragmentManager.beginTransaction()
+        mTransaction.add(R.id.frame_fragment_detail, DetailFragment().createInstance(id))
+        mTransaction.commit()
 
         fab_detail.setOnClickListener {
             val intent = Intent(this@DetailActivity, PostActivity::class.java)
